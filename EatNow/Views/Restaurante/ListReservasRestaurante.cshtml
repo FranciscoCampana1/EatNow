@@ -1,0 +1,85 @@
+﻿@using EatNow.DAL
+@model List<Reserva>
+<link rel="stylesheet" type="text/css" href="~/css/mainPage.css">
+<style>
+    table {
+        width: 70%;
+    }
+
+    .Hora {
+        font-weight: 700;
+        font-size: 40px;
+    }
+
+    .Mesa {
+        font-weight: 500;
+        font-size: 30px;
+    }
+</style>
+<div class="container">
+    @foreach (Reserva reserva in Model)
+    {
+        <div class="reserva m-5" style="background-color: #EC992E; padding: 15px; box-shadow: 0 19px 38px #25293A, 0 15px 12px #25293A38 !important;">
+            <div style="display: flex;">
+                <table>
+                    <tr>
+                        <td rowspan="4" width="150px"><img src="@Html.Raw(ObtenerImagenCliente(reserva.RIdCliente))" width="150px"></td>
+                        <td class="Hora">@reserva.Inicio.TimeOfDay</td>
+                        <td class="Mesa">Mesa: @reserva.NumeroMesa</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Nombre: Mario Leon Carrizo</td>
+                        <td>Hora Reserva: @reserva.Inicio.TimeOfDay</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Telf.: @Html.Raw(ObtenerTelfCliente(reserva.RIdCliente))</td>
+                        <td>Hora Máxima Asistencia: @reserva.Inicio.AddMinutes(30).TimeOfDay</td>
+                    </tr>
+                    <tr>
+                        <td>Fecha: @reserva.Inicio.Date.ToString().Split(" ")[0]</td>
+                    </tr>
+                </table>
+                <div style="display: flex;width: 30%;align-items: flex-end;justify-content: space-between;flex-direction: column;">
+                    <div>
+                        <button type="button" class="btn @(reserva.EstadoReservaNombre == "Cancelado" ? "danger" : "success")" style="width: 200px; height: 50px; cursor: default !important;">@reserva.EstadoReservaNombre</button>
+                    </div>
+                    @if (reserva.EstadoReservaNombre == "Reservado")
+                    {
+                        <div class="d-flex">
+                            <form asp-action="CompleteBooking" asp-controller="Restaurante" method="post" asp-antiforgery="true">
+                                <input type="text" name="idReserva" value="@reserva.IdReserva" style="display: none;" />
+                                <button type="submit" class="btn btn-primary" style="height: 50px; margin-right: 5px;">Completado</button>
+                            </form>
+                            <form asp-action="CancelBooking" asp-controller="Restaurante" method="post" asp-antiforgery="true">
+                                <input type="text" name="idReserva" value="@reserva.IdReserva" style="display: none;" />
+                                <button type="submit" class="btn danger" style="width: 100px; height: 50px;">Cancelar</button>
+                            </form>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div></div>
+        </div>
+    }
+</div>
+
+@functions {
+    public string ObtenerImagenCliente(int IdCliente)
+    {
+        var clienteDAL = new ClienteDAL(Conexion.CadenaBBDD);
+        Cliente cliente = clienteDAL.GetClientById(IdCliente);
+
+        if (cliente.URLFoto == null)
+            cliente.URLFoto = "/images/noImage.jpg";
+
+        return cliente.URLFoto;
+    }
+
+    public string ObtenerTelfCliente(int IdCliente)
+    {
+        var clienteDAL = new ClienteDAL(Conexion.CadenaBBDD);
+        Cliente cliente = clienteDAL.GetClientById(IdCliente);
+
+        return cliente.Telefono;
+    }
+}

@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EatNow</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/EatNow.styles.css" asp-append-version="true" />
+
+    <script>
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+    </script>
+
+    <script src="https://kit.fontawesome.com/fb0bc0ca47.js" crossorigin="anonymous"></script>
+
+
+
+    <style>
+        .header {
+            background-color: #252a39;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            width: 100%;
+            padding: 5px 50px;
+            padding-right: 0;
+        }
+
+        .header nav {
+            margin-top: 10px;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+        }
+
+        .header .logo {
+            cursor: pointer;
+            transition: all 0.3s;
+            display:inline;
+        }
+
+        .header .logo button {
+            background-color: transparent !important;
+            border-radius: 0 !important;
+            border:none;
+        }
+
+        .header .logo:hover {
+            cursor: pointer;
+            transform: scale(1.05);
+        }
+
+        .header .logo img {
+            height: 40px;
+            width: 40px;
+            transition: all 0.3s;
+        }
+
+        .header .logo img:hover {
+            transform: scale(1.05);
+            border-radius: 10px;
+        }
+
+        .header .logo b {
+            color: #f88a19;
+            font-size: 20px;
+        }
+
+        .header #btn-iniciar-sesion {
+            background: -webkit-linear-gradient(right, #EC992E, #E76954);
+            color: #252a39;
+            padding: 10px;
+            border-radius:8px;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+
+        .header #btn-iniciar-sesion:hover {
+            transform: scale(1.05);
+            background: -webkit-linear-gradient(left, #EC992E, #E76954);
+        }
+        .header .dropdown {
+            display:inline-block;
+            width: 180px;
+
+            justify-content: center;
+            align-items:center;
+            text-align:center;
+        }
+
+        .header .menu {
+            display: none;
+            position:absolute;
+            width:100%;
+            background-color: #252a39;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .header .menu .opciones {
+                border: none;
+                background-color: transparent;
+                border-radius: 0;
+                width:100%;
+            }
+
+                .header .menu form:hover {
+                    background: #EC992E;
+                }
+
+        .header .dropdown:hover .menu {
+            display: block;
+            padding-top: 5px;
+        }
+
+        .header .perfil {
+            position:center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #ffbc0e;
+        }
+
+        .header .perfil:hover {
+            transform: scale(1.05);
+            transition: all 0.3s;
+            border: 2px solid #E76954;
+        }
+
+        header {
+            width: 100%;
+        }
+
+        #rest-name{
+           color: #f88a19;
+        }  
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="header">
+
+            <div class="logo">
+                @if (ViewBag.IdEmpleado != null)
+                {
+                    <form asp-action="Index" asp-controller="Empleado" method="post" asp-antiforgery="true">
+                        <button>
+                            <img src="/images/EAT_NOW_LOGO.png" alt="Logo">
+                            <b>EatNow/@ViewBag.NombreRestaurante</b>
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="BotonHome" asp-controller="Home" method="post" asp-antiforgery="true">
+                        <button>
+                            <img src="/images/EAT_NOW_LOGO.png" alt="Logo">
+                            <b>EatNow</b>
+                        </button>
+                    </form>
+                }
+
+                
+            </div>
+
+            @if (ViewBag.IdCliente != null )
+            {
+                <div class="dropdown">
+                    @if (ViewBag.ImageCliente != null)
+                    {
+                        <img class="perfil" src="@ViewBag.ImageCliente" alt="">
+                    }
+                    else
+                    {
+                        <img class="perfil" src="/images//noImage.jpg" alt="">
+                    }
+
+                    <div class="menu">
+                        <form asp-action="ReservasUsuario" asp-controller="Home" method="post" asp-antiforgery="true">
+                            <button class="opciones"><i class="fa-solid fa-utensils"></i> Historial reservas</button><br>
+                        </form>
+                        <form asp-action="Perfil" asp-controller="Home" method="post" asp-antiforgery="true">
+                            <button class="opciones"><i class="fa-solid fa-user-pen"></i> Ver/Editar perfil</button><br>
+                        </form>
+                        <form asp-action="CerrarSesion" asp-controller="Home" method="post" asp-antiforgery="true">
+                            <button class="opciones"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button><br>
+                        </form>
+                    </div>
+                </div>
+            }
+
+
+            else if (ViewBag.IdEmpleado != null)
+            {
+                <div class="dropdown">
+                        <img class="perfil" src="/images//noImage.jpg" alt="">
+                    <div class="menu">
+                        <form asp-action="InfoUsuario" asp-controller="Empleado" method="post" asp-antiforgery="true">
+                            <button class="opciones"><i class="fa-solid fa-user-pen"></i> Ver perfil</button><br>
+                        </form>
+                        <form asp-action="CerrarSesion" asp-controller="Home" method="post" asp-antiforgery="true">
+                            <button class="opciones"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button><br>
+                        </form>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <form asp-action="Login" asp-controller="Home" method="post" asp-antiforgery="true">
+                    <button id="btn-iniciar-sesion">Iniciar sesión</button>
+                </form>
+                
+            }
+
+        </nav>
+        </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    </header>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - EatNow
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+
+    <script>
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Restaurante
+
+<link rel="stylesheet" type="text/css" href="~/css/infoPerfil.css">
+
+<div id="main-container">
+    <!-- INFORMACION DEL RESTAURANTE -->
+    <div id="informacion-user" class="Selected">
+        <div id="cont-img">
+            <img src="@(Model.URLImagen != null ? Model.URLImagen : null)">
+        </div>
+        <div id="info-cont">
+            <div id="info2">
+                <div style="display: flex; width: 100%;">
+                    <div style="width: 40%;" class="inf2"><label>Nombre:</label></div>
+                    <div style="width: 60%;" class="inf2"><label>@Model.Nombre</label></div>
+                </div>
+                <div style="display: flex; width: 100%;">
+                    <div style="width: 40%;" class="inf2"><label>Dirección:</label></div>
+                    <div style="width: 60%;" class="inf2"><label>@Model.Direccion</label></div>
+                </div>
+                <div style="display: flex; width: 100%;">
+                    <div style="width: 40%;" class="inf2"><label>Teléfono:</label></div>
+                    <div style="width: 60%;" class="inf2"><label>@Model.Telefono</label></div>
+                </div>
+                <div style="display: flex; width: 100%;">
+                    <div style="width: 40%;" class="inf2"><label>Web:</label></div>
+                    <div style="width: 60%;" class="inf2"><label>@Model.Web</label></div>
+                </div>
+                <div style="display: flex; width: 100%;">
+                    <div style="width: 40%;" class="inf2"><label>Descripción:</label></div>
+                    <div style="width: 60%;" class="inf2"><label>@Model.Descripcion</label></div>
+                </div>
+                <div style="display: flex; width: 100%;">
+                    <div style="width: 40%;" class="inf2"><label>Hora Apertura:</label></div>
+                    <div style="width: 60%;" class="inf2"><label>@Model.HoraApertura</label></div>
+                </div>
+                <div style="display: flex; width: 100%;">
+                    <div style="width: 40%;" class="inf2"><label>Hora Cierre:</label></div>
+                    <div style="width: 60%;" class="inf2"><label>@Model.HoraCierre</label></div>
+                </div>
+            </div>
+
+            <button onclick="ToogleEditUser()" class="btn info"> <i class="fa fa-solid fa-pencil"></i>Editar</button>
+        </div>
+    </div>
+    <!-- FORMULARIO INFORMACION DEL RESTAURANTE -->
+    <div id="editar-user" class="full">
+        <form style="margin: 15px;" asp-action="UpdateRestaurante" asp-controller="restaurante" method="post" asp-antiforgery="true">
+            <div id="titulo">
+                <span>Editar Información Restaurante</span>
+            </div>
+            <input asp-for="IdRestaurante" type="text" name="IdRestaurante" value=@Model.IdRestaurante style="display:none">
+            <div class="input-box">
+                <input asp-for="Nombre" type="text" name="Nombre" value=@Model.Nombre>
+                <span>Nombre</span>
+            </div>
+            <div class="input-box">
+                <input asp-for="Direccion" type="text" name="Direccion" value=@Model.Direccion>
+                <span>Dirección</span>
+            </div>
+            <div class="input-box">
+                <input asp-for="Telefono" type="text" name="Telefono" value=@Model.Telefono>
+                <span>Teléfono</span>
+            </div>
+            <div class="input-box">
+                <input asp-for="Web" type="text" name="Web" value=@Model.Web>
+                <span>Web</span>
+            </div>
+            <div class="input-box">
+                <input asp-for="Descripcion" type="text" name="Descripcion" value=@Model.Descripcion>
+                <span>Descripción</span>
+            </div>
+            <div class="input-box">
+                <input type="time" asp-for="HoraApertura" name="HoraApertura" value=@Model.HoraApertura>
+                <span>Hora Apertura</span>
+            </div>
+            <div class="input-box">
+                <input type="time" asp-for="HoraCierre" name="HoraCierre" value=@Model.HoraCierre>
+                <span>Hora Cierre</span>
+            </div>
+
+            <div style="display: flex; margin-top: 10px;">
+                <button onclick="ToogleEditUser()" type="reset" class="btn danger">CANCELAR</button>
+                <button type="submit" class="btn success">GUARDAR</button>
+            </div>
+        </form>
+        <div style="margin: 15px;">
+            <div id="titulo">
+                <span>Fotos Restaurante</span>
+            </div>
+            <div id="galeria">
+                @foreach (Imagen image in ViewBag.Images)
+                {
+                    <form class="foto" asp-action="EliminarFotoRestaurante" asp-controller="restaurante" method="post" asp-antiforgery="true">
+                        <img src="@image.URL">
+                        <div>
+                            <input type="text" name="idImage" style="display:none" value="@image.IdImagen">
+                            <button type="submit" class="btn danger"><i class="fa fa-solid fa-trash"></i></button>
+                        </div>
+                    </form>
+                }
+            </div>
+            <form id="añadirimagen" asp-action="AddFotoRestaurante" asp-controller="restaurante" method="post" asp-antiforgery="true">
+                <div class="input-box">
+                    <input type="text" name="idRestaurante" value=@Model.IdRestaurante style="display:none">
+                    <input type="text" name="urlImage">
+                    <span>URL Imagen</span>
+                    <button type="submit" class="btn success">+</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    let InfoUser = document.getElementById("informacion-user");
+    let EditUser = document.getElementById("editar-user");
+
+    function ToogleEditUser() {
+        InfoUser.classList.toggle("Selected");
+        EditUser.classList.toggle("Selected");
+    }
+</script>

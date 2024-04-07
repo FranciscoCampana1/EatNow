@@ -1,0 +1,140 @@
+﻿@{
+    ViewData["Title"] = "Información Restaurante - " + Model.Nombre;
+}
+@model Restaurante
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+<link rel="stylesheet" type="text/css" href="~/css/infoRestaurante.css">
+
+<div id="main-container">
+    <div id="info">
+        <div id="portada">
+            <h1>@Model.Nombre</h1>
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" style="background-color: #E76954; border-radius: 20px; padding: 10px;">
+                <div class="carousel-inner">
+                    @{ Boolean first = true; }
+                    @foreach (Imagen image in ViewBag.Images)
+                    {
+                        // Solo se debe añadir la clase active al primer elemento
+                        <div class="carousel-item @(first ? "active" : "" )">
+                            <img src="@image.URL" class="d-block w-100" alt="...">
+                        </div>
+                        
+                        // Variable para comprobar si es el primer elemento
+                        first = false;
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div id="cont-info">
+            <div id="Horarios" class="horario">
+            </div>
+            <div class="block">
+                <h3>Información Restaurante:</h3>
+                <hr style="margin: 4px">
+                <p>Dirección: @Model.Direccion <a href="http://maps.google.com/?q=@Model.Direccion" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Ver en Maps" class="bi bi-geo-alt-fill"></a></p>
+                <p>Telf.: (@Model.Telefono) Web:<a href="@Model.Web" target="_blank">@Model.Web</a></p>
+                <h5>Descripción:</h5>
+                <p class="desc">@Model.Descripcion</p>
+            </div>
+        </div>
+    </div>
+    <div id="cont-menu" style="margin-top: 5px">
+        <h2 style="text-align:center; margin-top: 5px;">Menú Del Restaurante</h2>
+        <div id="menu">
+            @foreach(Plato plato in ViewBag.Platos)
+            {
+                <label class="plato"><img src="@plato.URLImagen"></label>
+            }
+        </div>
+            <div id="reserva">
+                @if (ViewBag.IdCliente != null)
+                {
+                <form style="display: flex;" asp-area="" asp-controller="restaurante" asp-action="mapaRestaurante">
+                    <input type="number" name="IdRestaurante" style="display: none;" value="@Model.IdRestaurante">
+                    <button style="margin: 0 auto;" class="btn submit" type="submit">RESERVA YA!</button>
+                </form>
+                }
+                else
+                {
+                <form style="display: flex;" asp-area="" asp-controller="home" asp-action="login">
+                    <button style="margin: 0 auto;" class="btn submit" type="submit">Inicia Sesión Para Reservar</button>
+                </form>
+                }
+            </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // Cuando el documento está listo...
+    document.addEventListener("DOMContentLoaded", function (event) {
+        // Inicializamos los tooltips
+        let tooltipTriggerList = document.querySelectorAll("[data-bs-toggle='tooltip']");
+        let tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+        // Función onClick para ocultar el tooltip cuando se abre la nueva página
+        $("a[data-bs-toggle='tooltip']").on("click", function () {
+            // Ocultamos y volvemos a mostrar en 1ms el icono de localización para evitar el bug de que no se oculta el tooltip
+            // Referencia: https://stackoverflow.com/a/44074975
+            let anchor = $(this);
+            anchor.hide();
+            setTimeout(function () {
+                anchor.show();
+            }, 1);
+        });
+
+        var divHorarios = document.getElementById("Horarios");
+
+        // Obtener las horas de apertura y cierre desde el modelo como cadenas
+        var horaAperturaStr = "@Model.HoraApertura";
+        var horaCierreStr = "@Model.HoraCierre";
+
+        // Obtener la fecha y hora actual como referencia
+        var fechaActual = new Date();
+
+        // Convertir las cadenas a objetos Date
+        var horaApertura = new Date()
+        horaApertura.setHours(horaAperturaStr.split(":")[0], horaAperturaStr.split(":")[1])
+        var horaCierre = new Date()
+        horaCierre.setHours(horaCierreStr.split(":")[0], horaCierreStr.split(":")[1])
+
+        // Ajustar la hora de cierre si es anterior a la hora de apertura
+        if (horaCierre < horaApertura) {
+            horaCierre.setDate(horaCierre.getDate() + 1);
+        }
+
+        // Intervalo de tiempo (en minutos) entre opciones
+        var intervalo = 60;
+
+        // Generar opciones
+        for (var tiempo = new Date(horaApertura); tiempo < horaCierre; tiempo.setMinutes(tiempo.getMinutes() + intervalo)) {
+            var horaStr = ('0' + tiempo.getHours()).slice(-2);
+            var minutoStr = ('0' + tiempo.getMinutes()).slice(-2);
+            var optionText = horaStr + ":" + minutoStr;
+
+            var form = document.createElement("form");
+
+            var button = document.createElement("button");
+            button.value = optionText;
+            button.innerHTML = optionText;
+
+            // Desactivar la opción si la hora ya ha pasado
+            if (tiempo.getTime() < fechaActual.getTime()) {
+                button.classList.add("past");
+            }
+            else {
+                button.classList.add("clean");
+            }
+
+            divHorarios.appendChild(button);
+        }
+    });
+</script>

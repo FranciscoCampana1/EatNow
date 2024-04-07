@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<Plato>
+
+<link rel="stylesheet" type="text/css" href="~/css/menuRestaurante.css">
+
+<div id="main-container">
+    <!-- FORMULARIO INFORMACION DEL USUARIO -->
+    <div id="editar-user">
+        <div style="margin: 15px; width: 100%;">
+            <div id="titulo">
+                <span>Menú</span>
+            </div>
+            <div id="menu">
+                @foreach(Plato plato in Model)
+                {
+                    <form class="plato" asp-action="EliminarPlato" asp-controller="empleado" method="post" asp-antiforgery="true">
+                        <input type="text" name="IdPlato" style="display: none" value="@plato.IdPlato" />
+                        <img src="@plato.URLImagen">
+                        <div>
+                            <label>@plato.Precio €</label>
+                            <button type="submit" class="btn danger"><i class="fa fa-solid fa-trash"></i></button>
+                        </div>
+                        <input type="text" style="display: none" value="@plato.RIdRestaurante" />
+                    </form>
+                }
+            </div>
+            <form id="añadirPlato" asp-action="AñadirPlato" asp-controller="empleado" method="post" asp-antiforgery="true">
+                <div class="input-box">
+                    <label>
+                        <input type="text" placeholder="Nombre" name="name" />
+                    </label>
+                    <label>
+                        <input type="text" placeholder="Precio" name="precio" />
+                    </label>
+                    <label>
+                        <input type="text" placeholder="URL Imagen" name="URL" />
+                    </label>
+                    <input type="text" name="IdRestaurante" style="display: none" value="@ViewBag.IdRestaurante" />
+                    <button type="submit" class="btn success">+</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

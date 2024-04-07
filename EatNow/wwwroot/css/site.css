@@ -1,0 +1,87 @@
+/*COLOR 1: Blanco:  #F7F9F7  */
+/*COLOR 2: NARANJA: #EC992E  */
+/*COLOR 3: ROJO:    #E76954  */
+/*COLOR 4: MORADO:  #BD4760  */
+/*COLOR 5: NEGRO:   #25293A  */
+/*COLOR EXTRA:      #8592a7  */
+:root {
+    --color-fondo-claro: #F7F9F7;
+    --color-contraste-claro: #EC992E;
+    --color-principal: #E76954;
+    --color-contraste-oscuro: #BD4760;
+    --color-fondo-oscuro: #25293A;
+}
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background: var(--color-fondo-claro) !important;
+    font-family: 'Nunito', sans-serif !important;
+}
+
+button {
+    border-radius: 30px !important;
+    color: #F7F9F7 !important;
+    font-size: 15px !important;
+    cursor: pointer !important;
+}
+
+.submit {
+    text-transform: uppercase !important;
+    font-weight: 600 !important;
+    font-family: 'Nunito', sans-serif !important;
+    background: -webkit-linear-gradient(left, #E76954, #BD4760) !important;
+}
+
+.submit:hover{ background: -webkit-linear-gradient(left, #EC992E, #E76954) !important; }
+
+/*--BOTONES--*/
+.btn.primary { background-color: #e66854; }
+.btn.info { background-color: #252a39; }
+.btn.success, .alert.success { background-color: #7a9a51; }
+.btn.warning { background-color: #f88a19; }
+.btn.danger, .alert.danger { background-color: #f44336; color: #F7F9F7; }
+/*--Texto--*/
+p.primary, label.primary { color: #e66854; }
+p.info, label.info { color: #252a39; }
+p.success, label.success { color: #7a9a51; }
+p.warning, label.warning { color: #f88a19; }
+p.danger, label.danger { color: #f44336; }
+
+/* width */
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #F7F9F7;
+    -webkit-box-shadow: inset 0 0 6px #25293A;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #EC992E;
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #BD4760;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+}

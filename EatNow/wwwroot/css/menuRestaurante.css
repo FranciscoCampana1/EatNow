@@ -1,0 +1,83 @@
+/*COLOR 1: Blanco:  #F7F9F7  */
+/*COLOR 2: NARANJA: #EC992E  */
+/*COLOR 3: ROJO:    #E76954  */
+/*COLOR 4: MORADO:  #BD4760  */
+/*COLOR 5: NEGRO:   #25293A  */
+
+#main-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#editar-user, #informacion-user {
+    overflow: hidden;
+    background-color: #BD4760;
+    box-shadow: 0 10px 28px #25293A;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    height: 70%;
+    margin: 10px;
+    transition: all 0.75s ease-out;
+}
+
+    #editar-user #titulo {
+        width: 100%;
+        text-align: center;
+        font-size: 30px;
+    }
+
+.input-box {
+    position: relative;
+    width: 100%;
+}
+
+    .input-box input {
+        position: relative;
+        width: 90%;
+        border: solid 3px;
+        border-radius: 10px;
+        outline: none;
+        padding: 15px 10px 2px;
+        font-weight: 500;
+        font-size: 1em;
+        margin: 10px 0 0 5%;
+    }
+
+#menu {
+    width: 100%;
+    background-color: #25293A;
+    border-radius: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+}
+
+.plato {
+    aspect-ratio: 1/1;
+    background-color: #F7F9F7;
+    max-width: 15%;
+    border-radius: 5px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+    .plato img {
+        max-width: 80%;
+        margin: auto;
+        display: block;
+        transition: all 0.5s ease-out;
+    }
+
+        .plato img:hover {
+            max-width: 90%;
+            transition: all 0.5s ease-out;
+        }

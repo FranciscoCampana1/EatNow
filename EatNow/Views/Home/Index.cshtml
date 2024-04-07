@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<Restaurante>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+<link rel="stylesheet" type="text/css" href="~/css/mainPage.css">
+
+
+<div style="display: flex;">
+    <div class="options">
+        <div class="filter-container container">
+            <form asp-action="Index" asp-controller="home" method="post" asp-antiforgery="true">
+                <h2>Filtrar Restaurantes</h2>
+                <div class="filter">
+                    <label class="time">
+                        <input type="time" name="time">
+                    </label>
+                    <label class="time" style="margin-right: -2px;">
+                        <input type="date" name="date">
+                    </label>
+                    <label class="search">
+                        <i class="fa fa-search"></i>
+                        <input type="text" placeholder="Dirección" name="direccion" />
+                    </label>
+                    <label class="search">
+                        <i class="fa fa-search"></i>
+                        <input type="text" placeholder="Nombre Restaurante" name="nombre" />
+                    </label>
+                </div>
+                <button class="btn info" type="submit">Buscar</button>
+            </form>
+        </div>
+        @if (ViewBag.IdCliente != null)
+        {
+            <div class="filter-container container">
+                <h2>Últimas Reservas</h2>
+                <div class="last-reservas">
+                    @foreach(Reserva reservas in ViewBag.Reserva)
+                    {
+                        <div class="reserva">
+                            <form asp-action="Index" asp-controller="restaurante" method="post" asp-antiforgery="true">
+                                <button class="btn">@reservas.NombreRestaurante</button>
+                                <input type="number" name="IdRestaurante" style="display: none;" value="@reservas.RIdRestaurante">
+                            </form>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+    <div class="container">
+        <h1>¡Elige el restaurante al que te gustaría ir!</h1>
+        @foreach (Restaurante restaurante in Model)
+        {
+            <form asp-action="Index" asp-controller="restaurante" method="post" asp-antiforgery="true">
+                <div class="restaurante">
+                    <div class="cont-img">
+                        <img src="@(restaurante.URLImagen != null ? restaurante.URLImagen : null)">
+                    </div>
+                    <div class="cont-info">
+                        <div class="info">
+                            <h2 style="font-weight: 500">@restaurante.Nombre.ToUpper()</h2>
+                            <p>@restaurante.Direccion<a href="http://maps.google.com/?q=@restaurante.Direccion" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Ver en Maps" class="bi bi-geo-alt-fill"></a></p>
+                            <p>(@restaurante.Telefono) <a href="@restaurante.Web" target="_blank">@restaurante.Web</a></p>
+                            <p class="desc">@restaurante.Descripcion</p>
+                            <p style="margin-bottom: 5px;">Horario:</p>
+                            <div class="horario">
+                                <label>@restaurante.HoraApertura - @restaurante.HoraCierre</label>
+                                <input type="number" name="IdRestaurante" style="display: none;" value="@restaurante.IdRestaurante">
+                            </div>
+                        </div>
+                        <div class="reservar">
+                            <button class="btn submit" type="submit">Reservar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        }
+    </div>
+</div>
+
+<script src="~/js/mainPage.js" asp-append-version="true"></script>
+<script type="text/javascript">
+    // Cuando el documento está listo...
+    document.addEventListener("DOMContentLoaded", function (event) {
+        // Inicializamos los tooltips
+        let tooltipTriggerList = document.querySelectorAll("[data-bs-toggle='tooltip']");
+        let tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+        // Función onClick para ocultar el tooltip cuando se abre la nueva página
+        $("a[data-bs-toggle='tooltip']").on("click", function () {
+            // Ocultamos y volvemos a mostrar en 1ms el icono de localización para evitar el bug de que no se oculta el tooltip
+            // Referencia: https://stackoverflow.com/a/44074975
+            let anchor = $(this);
+            anchor.hide();
+            setTimeout(function () {
+                anchor.show();
+            }, 1);
+        });
+    });
+</script>

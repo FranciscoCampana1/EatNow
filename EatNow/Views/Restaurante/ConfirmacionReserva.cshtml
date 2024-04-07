@@ -1,0 +1,121 @@
+﻿@using EatNow.DAL
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Reserva
+
+<style>
+    #cont-menu {
+        background-color: #BD4760;
+        border-radius: 10px;
+        width: 100%;
+        height: 100%;
+        margin: 0px 10px;
+        box-shadow: 0 19px 38px #25293A, 0 15px 12px #25293A38 !important;
+    }
+
+    #menu {
+        background-color: #25293A;
+        border-radius: 20px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin: 10px 20px;
+        max-width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        justify-content: center;
+    }
+
+    .plato {
+        aspect-ratio: 1/1;
+        background-color: #F7F9F7;
+        width: 100px;
+        border-radius: 5px;
+        margin: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+        .plato.Selected {
+            background-color: #EC992E;
+            max-width: 22%;
+        }
+
+        .plato img {
+            max-width: 80%;
+            margin: auto;
+            display: block;
+            transition: all 0.5s ease-out;
+        }
+
+    #info-cont {
+        width: 50%;
+        margin: 20px;
+    }
+
+    #info {
+        display: flex;
+        background-color: #25293A;
+        overflow: hidden;
+        border-radius: 10px;
+        padding: 10px;
+        width: 50%;
+        margin-bottom: 10px;
+    }
+
+    .inf {
+        background-color: #F7F9F7;
+        border-radius: 5px;
+        width: 100%;
+        height: 25%;
+        margin: 1px 2px;
+        padding: 2px;
+    }
+</style>
+
+<h1>Confirma los datos de tu reserva</h1>
+<div style="display: flex;">
+    <div id="info">
+        <div style="width: 40%;">
+            <div class="inf"><label>Nombre:</label></div>
+            <div class="inf"><label>Fecha Reserva:</label></div>
+            <div class="inf"><label>Hora Reserva:</label></div>
+            <div class="inf"><label>Hora Máxima para asistir:</label></div>
+        </div>
+        <div style="width: 60%;">
+            <div class="inf"><label>@Model.NombreCliente</label></div>
+            <div class="inf"><label>@Model.Inicio.Date.ToString().Split(" ")[0]</label></div>
+            <div class="inf"><label>@Model.Inicio.TimeOfDay</label></div>
+            <div class="inf"><label>@Model.Inicio.AddMinutes(30).TimeOfDay</label></div>
+        </div>
+    </div>
+    <div id="cont-menu" style="width: 50%;">
+        <h2 style="text-align:center;">Reserva tus platos por anticipado</h2>
+        <div id="menu">
+            @foreach (Plato plato in ViewBag.Platos)
+            {
+                <label id="@plato.IdPlato" class="plato" onclick="ChangeOnClick(@plato.IdPlato)"><img onclick="" src="@plato.URLImagen"><p>@plato.Precio€</p></label>
+            }
+        </div>
+    </div>
+</div>
+
+<form asp-area="" asp-controller="restaurante" asp-action="CrearReserva" method="post" asp-antiforgery="true">
+    <input type="text" class="form-control" name="NombreCliente" id="NombreCliente" value="@Model.NombreCliente" style="display: none">
+    <input type="text" class="form-control" name="ApellidoCliente" id="ApellidoCliente" value="@Model.ApellidoCliente" style="display: none">
+    <input type="number" class="form-control" name="RIdCliente" id="RIdCliente" value="@Model.RIdCliente" style="display: none">
+    <input type="number" class="form-control" name="RIdCasilla" id="RIdCasilla" value="@Model.RIdCasilla" style="display: none">
+    <input type="datetime" class="form-control" name="Inicio" id="Inicio" value="@Model.Inicio" style="display: none">
+    <input type="datetime" class="form-control" name="Fin" id="Fin" value="@Model.Fin" style="display: none">
+    <button type="submit" class="btn submit">Confirmar Reserva</button>
+</form>
+
+<script>
+    function ChangeOnClick(id) {
+        var label = document.getElementById(id);
+
+        label.classList.toggle("Selected");
+    }
+</script>

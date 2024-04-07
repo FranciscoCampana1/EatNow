@@ -1,0 +1,150 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Cliente
+@{
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+<link rel="stylesheet" type="text/css" href="~/css/login.css">
+
+<div>
+    @if (TempData["ErrorLoginMessage"] != null || TempData["ErrorCreatingClient"] != null)
+    {
+        <div class="row">
+            <div class="alert danger alert-dismissible fade show" role="alert" style="padding: 1rem 1rem !important; margin-bottom: 1rem!important">
+                @if (TempData["ErrorLoginMessage"] != null)
+                {
+                    <span>@TempData["ErrorLoginMessage"]</span>
+                }
+                else if (TempData["ErrorCreatingClient"] != null)
+                {
+                    <span>@TempData["ErrorCreatingClient"]</span>
+                }
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </div>
+        </div>
+    }
+
+    @if (TempData["ClientCreatedMessage"] != null)
+    {
+        <div class="row">
+            <div class="alert success alert-dismissible fade show" role="alert" style="padding: 1rem 1rem !important; margin-bottom: 1rem!important">
+                <span style="color: white;">@TempData["ClientCreatedMessage"]</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </div>
+        </div>
+    }
+
+    <!-- LOGIN | CLIENTE - TRABAJADOR -->
+    <div id="cont1" class="cont row">
+        <form asp-action="GetCliente" asp-controller="home" method="post" asp-antiforgery="true">
+            <div class="form sign-in">
+                <h2>Iniciar Sesión Como Cliente</h2>
+                <label>
+                    <span>Correo Electrónico</span>
+                    <input asp-for="CorreoElectronico" type="email" name="CorreoElectronico">
+                </label>
+                <label>
+                    <span>Contraseña</span>
+                    <input asp-for="Password" type="password" name="password" id="password">
+                    <i class="bi bi-eye-slash" id="togglePassword"></i>
+                </label>
+                <button class="submit" type="submit">Iniciar Sesión</button>
+                <p class="forgot-pass">Has olvidado tu contraseña?</p>
+                <p class="Question">No tienes cuenta?</p>
+                <button class="submit btn-Register" type="button">Registrarse</button>
+            </div>
+        </form>
+
+      <div class="sub-cont">
+        <div class="img">
+          <div class="img-text m-up">
+            <h2>¿Eres un Restaurante?</h2>
+            <p>Inicia sesión desde este lado para poder entrar!</p>
+          </div>
+          <div class="img-text m-in">
+            <h2>¿Eres un cliente?</h2>
+            <p>Si solo quieres reservar en un restaurante vente a este lado para iniciar sesión!</p>
+          </div>
+          <div class="img-btn">
+            <span class="m-up">Restaurante</span>
+            <span class="m-in">Cliente</span>
+          </div>
+        </div>
+
+        <div class="form sign-up">
+            <form asp-action="GetEmpleado" asp-controller="home" method="post" asp-antiforgery="true">
+                <h2>Iniciar Sesión Como Restaurante</h2>
+                <label>
+                    <span>Correo Electrónico</span>
+                    <input type="email" name="email">
+                </label>
+                <label>
+                    <span>Contraseña</span>
+                    <input type="password" name="password" id="passwordEmp">
+                    <i class="bi bi-eye-slash" id="togglePasswordEmp"></i>
+                </label>
+                <button class="submit" type="submit">Iniciar Sesión</button>
+            </form>
+        </div>
+      </div>
+    </div>
+    <br>
+
+    <!-- REGISTRARSE -->
+    <div id="cont2" class="cont hidden row">
+        <div style="padding-top: 20px !important;">
+            <h2>Registrarse</h2>
+            <form asp-action="Register" asp-controller="home" method="post" asp-antiforgery="true">
+                <label>
+                    <span>Nombre</span>
+                    <input asp-for="Nombre" type="text" name="Nombre">
+                </label>
+                <label>
+                    <span>Correo Electrónico</span>
+                    <input asp-for="CorreoElectronico" type="email" name="CorreoElectronico">
+                </label>
+                <label>
+                    <span>Teléfono</span>
+                    <input asp-for="Telefono" type="tel" name="Telefono">
+                </label>
+                <label>
+                    <span>Contraseña</span>
+                    <input asp-for="Password" type="password" name="Password" id="passwordRegister">
+                    <i class="bi bi-eye-slash" id="togglePasswordRegister"></i>
+                </label>
+                <button type="submit" class="submit register">Registrarse</button>
+                <p class="Question">Tienes cuenta?</p>
+                <button class="submit register btn-Login" type="button">Iniciar Sesión</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="~/js/togglePassword.js"></script>
+<script>
+    document.querySelector('.img-btn').addEventListener('click', function () {
+        document.querySelector('#cont1').classList.toggle('s-signup')
+    }
+    );
+
+    document.querySelector('.btn-Register').addEventListener('click', function () {
+        document.querySelector('#cont1').classList.toggle('hidden')
+        document.querySelector('#cont2').classList.toggle('hidden')
+    }
+    );
+
+    document.querySelector('.btn-Login').addEventListener('click', function () {
+        document.querySelector('#cont1').classList.toggle('hidden')
+        document.querySelector('#cont2').classList.toggle('hidden')
+    }
+    );
+
+    // Cuando el documento está listo...
+    document.addEventListener("DOMContentLoaded", function (event) {
+        togglePassword("#togglePassword", "#password");
+        togglePassword("#togglePasswordEmp", "#passwordEmp");
+        togglePassword("#togglePasswordRegister", "#passwordRegister");
+    });
+</script>

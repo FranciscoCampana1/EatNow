@@ -1,0 +1,272 @@
+﻿@model List<Casilla>
+
+<link rel="stylesheet" type="text/css" href="~/css/map.css">
+<link rel="stylesheet" type="text/css" href="~/css/loanding.css">
+<style>
+    td {
+        border-color: black;
+    }
+
+    #Options {
+        background-color: #EC992E;
+        border-radius: 20px;
+        padding: 20px;
+        height: 100%;
+        margin: 20px;
+        box-shadow: 0 19px 38px #25293A, 0 15px 12px #25293A38 !important;
+    }
+</style>
+
+<div id="MainContainer">
+    <div id="MapContainer">
+    </div>
+    <div id="Options" style="margin-left: 20px">
+        <div>
+            <h2>Herramientas de Edición</h2>
+            <h5>Utiliza estas herramientas para editar el mapa del restaurante</h5>
+            <button id="Borrar" onclick="SetState(0)" class="pincel">Borrar</button>
+            <button id="Suelo" onclick="SetState(1)" class="pincel">Suelo</button>
+            <button id="Mesa" onclick="SetState(2)" class="pincel">Mesa</button>
+        </div>
+        <div>
+            <hr>
+            <button type="reset" class="btn danger">Cancelar</button>
+            <button id="save" type="submit" onclick="PushCasillas()" class="btn success">Guardar</button>
+            <hr>
+        </div>
+
+        <div id="loanding" class="loadingio-spinner-spinner-2chw594blmn">
+            <div class="ldio-zlnv6488mym">
+                <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            </div>
+        </div>
+        
+
+        <div class="container">
+            <div class="row" id="correct" style="display: none">
+                <div class="alert success alert-dismissible fade show" role="alert" style="padding: 1rem 1rem !important; margin-bottom: 1rem!important">
+                    <span style="color: white;">Todas las casillas guardadas correctamente</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    let GridSizeX = 15;
+    let GridSizeY = 15;
+
+    let PincelBorrar = document.getElementById('Borrar');
+    let PincelSuelo = document.getElementById('Suelo');
+    let PincelMesa = document.getElementById('Mesa');
+
+    let Guardar = document.getElementById('save');
+    let Loanding = document.getElementById('loanding');
+
+    let container = document.getElementById('MapContainer');
+
+    class CasillaJS {
+        constructor(x, y, numeroMesa, esAire, esMesa, estaOcupada, idRestaurante) {
+            this.x = x;
+            this.y = y;
+            this.numeroMesa = numeroMesa;
+            this.esAire = esAire;
+            this.esMesa = esMesa;
+            this.estaOcupada = estaOcupada;
+            this.idRestaurante = idRestaurante;
+        }
+    }
+
+    const casillas = [];
+
+    window.onload = CreateNewTable();
+    //window.onload = GetCasillas();
+
+    function CreateNewTable() {
+        const body = document.body;
+
+        const tbl = document.createElement('table');
+        tbl.id = "mapa";
+
+        for (let i = 0; i < GridSizeY; i++) {
+            const tr = tbl.insertRow();
+            for (let j = 0; j < GridSizeX; j++) {
+                const td = tr.insertCell();
+                td.id = i + "-" + j;
+                td.width = 630 / GridSizeY;
+                td.height = 630 / GridSizeX;
+
+                td.addEventListener('click', (event) => {
+                    if (event.button == 0)
+                        ChangeState(td.id);
+                });
+                td.addEventListener('contextmenu', (ev) => {
+                    ev.preventDefault();
+                    ChangeZoneState(td.id);
+                });
+
+                let casilla = new CasillaJS(j, i, 0, false, false, 0);
+                casillas.push(casilla);
+            }
+        }
+        container.appendChild(tbl);
+        GetCasillas();
+    }
+
+    function SetTable(casillasRestaurante) {
+
+        casillasRestaurante.forEach(function (cR) {
+            let cords = cR.Y + '-' + cR.X;
+
+            if (cR.EsMesa == false)
+                SetState(1);
+            else
+                SetState(2);
+
+            ChangeState(cords);
+        });
+    }
+
+    let PencilDraw = 0;
+
+    function SetState(type) {
+        PencilDraw = type;
+
+        switch (type) {
+            case 0:
+                PincelBorrar.classList.add("Selected");
+                PincelSuelo.classList.remove("Selected");
+                PincelMesa.classList.remove("Selected");
+                break;
+            case 1:
+                PincelBorrar.classList.remove("Selected");
+                PincelSuelo.classList.add("Selected");
+                PincelMesa.classList.remove("Selected");
+                break;
+            case 2:
+                PincelBorrar.classList.remove("Selected");
+                PincelSuelo.classList.remove("Selected");
+                PincelMesa.classList.add("Selected");
+                break;
+        }
+    }
+    SetState(0);
+
+    function ChangeState(IdCasilla) {
+        let Casilla = document.getElementById(IdCasilla);
+        let cords = Casilla.id.split("-");
+        let c = casillas.find(x => x.x == cords[1] && x.y == cords[0]);
+
+        if (PrimerCasilla != null) {
+            PrimerCasilla.classList.remove("Selec");
+            PrimerCasilla = null;
+        }
+
+        if (PencilDraw == 0) {
+            Casilla.classList.remove("Aire");
+            Casilla.classList.remove("Mesa");
+            c.esAire = false;
+            c.esMesa = false;
+        }
+        else if (PencilDraw == 1) {
+            Casilla.classList.add("Aire");
+            Casilla.classList.remove("Mesa");
+            c.esAire = true;
+            c.esMesa = false;
+        }
+        else if (PencilDraw == 2) {
+            Casilla.classList.remove("Aire");
+            Casilla.classList.add("Mesa");
+            c.esAire = true;
+            c.esMesa = true;
+        }
+    }
+
+    let PrimerCasilla = null;
+    let SegundaCasilla = null;
+
+    function ChangeZoneState(IdCasilla) {
+        if (PrimerCasilla == null) {
+            IdCasillaA = IdCasilla;
+            PrimerCasilla = document.getElementById(IdCasilla);
+            PrimerCasilla.classList.add("Selec");
+        }
+        else {
+            PrimerCasilla.classList.remove("Selec");
+            SegundaCasilla = document.getElementById(IdCasilla);
+
+            let cordsA = PrimerCasilla.id.split("-");
+            let cordsB = SegundaCasilla.id.split("-");
+
+            //Rellenar Casillas entre A y B
+            let ABiggerX = parseInt(cordsA[0]) <= parseInt(cordsB[0]);
+            let ABiggerY = parseInt(cordsA[1]) <= parseInt(cordsB[1]);
+
+            for (let x = cordsA[0];
+                ABiggerX ? x <= parseInt(cordsB[0]) : x >= parseInt(cordsB[0]);
+                ABiggerX ? x++ : x--) {
+                for (let y = cordsA[1];
+                    ABiggerY ? y <= parseInt(cordsB[1]) : y >= parseInt(cordsB[1]);
+                    ABiggerY ? y++ : y--) {
+                    let idSel = x + "-" + y;
+                    CasillaRellenar = document.getElementById(idSel);
+                    ChangeState(idSel);
+                }
+            }
+
+            PrimerCasilla = null;
+            SegundaCasilla = null;
+        }
+    }
+
+    function GetCasillas() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetCasillas", "Empleado")",
+            dataType: "json",
+            success: function (casillasJson) {
+                // Convertir el JSON a una array de objetos CasillasJS
+                var casillasArray = JSON.parse(casillasJson);
+                if (casillasArray != null) {
+                    console.log(casillasArray);
+                    SetTable(casillasArray);
+                    Loanding.style.display = "none";
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function PushCasillas() {
+        // Convertir el array a una cadena JSON
+        let casillasG = casillas.filter(c => c.esAire == true);
+        console.log(casillasG);
+        var jsonMiArray = JSON.stringify(casillasG);
+
+        console.log(jsonMiArray);
+        Loanding.style.display = "";
+        Guardar.disabled = true;
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("SaveCasillas", "Empleado")",
+            data: { casillasJson: jsonMiArray },
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                Guardar.disabled = false;
+                Loanding.style.display = "none";
+                document.getElementById('correct').style.display = "";
+            },
+            error: function (error) {
+                console.log(error);
+                Guardar.disabled = false;
+            }
+        });
+    }
+
+</script>

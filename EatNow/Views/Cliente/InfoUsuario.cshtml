@@ -1,0 +1,100 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Cliente
+
+<link rel="stylesheet" type="text/css" href="~/css/infoPerfil.css">
+
+@if (TempData["ClientUpdatedMessage"] != null)
+{
+    <div class="row">
+        <div class="alert success alert-dismissible fade show" role="alert" style="padding: 1rem 1rem !important; margin-bottom: 1rem!important">
+            <span style="color: white;">@TempData["ClientUpdatedMessage"]</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </div>
+    </div>
+}
+
+@if (TempData["ErrorUpdatingMessage"] != null)
+{
+    <div class="row">
+        <div class="alert danger alert-dismissible fade show" role="alert" style="padding: 1rem 1rem !important; margin-bottom: 1rem!important">
+            <span>@TempData["ErrorUpdatingMessage"]</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </div>
+    </div>
+}
+
+<div id="main-container">
+    <!-- INFORMACION DEL USUARIO -->
+    <div id="informacion-user" class="Selected">
+        <div id="cont-img">
+            <img src="@(Model.URLFoto != null ? Model.URLFoto : "/images/noImage.jpg")" />
+        </div>
+        <div id="info-cont">
+            <div id="info">
+                <div style="width: 40%;">
+                    <div class="inf"><label>Nombre:</label></div>
+                    <div class="inf"><label>Apellidos:</label></div>
+                    <div class="inf"><label>Teléfono:</label></div>
+                    <div class="inf"><label>Correo Electrónico:</label></div>
+                </div>
+                <div style="width: 60%;">
+                    <div class="inf"><label>@Model.Nombre</label></div>
+                    <div class="inf"><label>@Model.Apellidos</label></div>
+                    <div class="inf"><label>@Model.Telefono</label></div>
+                    <div class="inf"><label>@Model.CorreoElectronico</label></div>
+                </div>
+            </div>
+
+            <button onclick="ToogleEditUser()" class="btn info"> <i class="fa fa-solid fa-pencil"></i>Editar</button>
+        </div>
+    </div>
+    <!-- FORMULARIO INFORMACION DEL USUARIO -->
+    <div id="editar-user">
+        <form style="margin: 15px;" asp-action="UpdateClient" asp-controller="cliente" method="post" asp-antiforgery="true">
+            <div id="titulo">
+                <span>EDITAR PERFIL</span>
+            </div>
+            <div class="input-box">
+                <input asp-for="Nombre" type="text" name="Nombre" value=@Model.Nombre>
+                <span>Nombre</span>
+            </div>
+            <div class="input-box">
+                <input asp-for="Apellidos" type="text" name="Apellidos" value=@Model.Apellidos>
+                <span>Apellidos</span>
+            </div>
+            <div class="input-box">
+                <input asp-for="Telefono" type="text" name="Telefono" value=@Model.Telefono>
+                <span>Teléfono</span>
+            </div>
+            <div class="input-box">
+                <input asp-for="CorreoElectronico" type="email" name="CorreoElectronico" value=@Model.CorreoElectronico>
+                <span>Correo Electrónico</span>
+            </div>
+            <div class="input-box">
+                <input asp-for="URLFoto" type="text" name="URLFoto" value=@Model.URLFoto>
+                <span>URL Foto Perfil</span>
+            </div>
+            <div class="input-box">
+                <input asp-for="Password" type="password" name="Password" value=@Model.Password>
+                <span>Contraseña</span>
+            </div>
+
+            <div style="display: flex; margin-top: 10px;">
+                <button onclick="ToogleEditUser()" type="reset" class="btn danger">CANCELAR</button>
+                <button type="submit" class="btn success">GUARDAR</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    let InfoUser = document.getElementById("informacion-user");
+    let EditUser = document.getElementById("editar-user");
+
+    function ToogleEditUser() {
+        InfoUser.classList.toggle("Selected");
+        EditUser.classList.toggle("Selected");
+    }
+</script>

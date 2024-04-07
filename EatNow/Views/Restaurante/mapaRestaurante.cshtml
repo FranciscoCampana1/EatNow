@@ -1,0 +1,274 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Restaurante
+
+<link rel="stylesheet" type="text/css" href="~/css/map.css">
+
+<style>
+    #info {
+        overflow: hidden;
+        background-color: #E76954;
+        box-shadow: 0 10px 28px #25293A !important;
+        border-radius: 8%;
+        margin: 15px;
+        padding: 15px;
+        width: 40%;
+        height: 100%;
+        transition: all 0.75s ease-out;
+    }
+</style>
+
+<div id="MainContainer">
+    <div id="info">
+        <h1>Elige la mesa que te gustaría reservar</h1>
+        <h3>Pulsa en el icono <i class="fa fa-solid fa-utensils"></i> para seleccionar la mesa</h3>
+        <hr>
+        <p>Una vez seleccionada la mesa podrás elegir fecha y hora en la que quieras hacer la reserva</p>
+    </div>
+    <div id="MapContainer">
+    </div>
+</div>
+
+<!--== MODAL ==-->
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Reserva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-area="" asp-controller="restaurante" asp-action="ConfirmacionReserva">
+                <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="Hora" class="col-form-label">Hora:</label>
+                            <select id="Hora" class="form-control form-select" name="Hora">
+                            </select>
+                            <label for="Fecha" class="col-form-label">Fecha:</label>
+                        <input type="date" class="form-control" name="Fecha" id="Fecha" onchange="UpdateHoursSelec()">
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" class="form-control" name="IdCliente" id="RIdCliente" value="@ViewBag.IdCliente" style="display:none">
+                            <input type="number" class="form-control" name="IdCasilla" id="RIdCasilla" style="display:none">
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Hacer Reserva</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    var Modal = document.getElementById('Modal')
+    Modal.addEventListener('show.bs.modal', function (event) {
+        // Button that triggered the modal
+        var button = event.relatedTarget
+        // Extract info from data-bs-* attributes
+        var recipient = button.getAttribute('data-bs-whatever')
+        // If necessary, you could initiate an AJAX request here
+        // and then do the updating in a callback.
+        //
+        // Update the modal's content.
+        var modalTitle = Modal.querySelector('.modal-title')
+        var modalIdCasilla = Modal.querySelector('#RIdCasilla')
+        var modalCords = Modal.querySelector('#Coordenadas')
+
+        modalTitle.textContent = 'Reserva Mesa ' + recipient
+        modalIdCasilla.value = recipient;
+    })
+
+    let GridSizeX = 15;
+    let GridSizeY = 15;
+
+    let container = document.getElementById('MapContainer');
+    let HoraInput = document.getElementById('Hora');
+    let FechaInput = document.getElementById('Fecha');
+
+    window.onload = CreateNewTable();
+    //window.onload = GetCasillas();
+
+    function UpdateHoursSelec() {
+        // Obtener las horas de apertura y cierre desde el modelo como cadenas
+        var horaAperturaStr = "@Model.HoraApertura";
+        var horaCierreStr = "@Model.HoraCierre";
+
+        // Obtener la fecha y hora actual como referencia
+        var fechaActual = new Date();
+
+        var fechaReserva = FechaInput.valueAsDate;
+        fechaReserva.setHours(new Date().getHours());
+        fechaReserva.setMinutes(new Date().getMinutes());
+
+        // Convertir las cadenas a objetos Date
+        var horaApertura = new Date(fechaReserva)
+        horaApertura.setHours(horaAperturaStr.split(":")[0], horaAperturaStr.split(":")[1])
+        var horaCierre = new Date(fechaReserva)
+        horaCierre.setHours(horaCierreStr.split(":")[0], horaCierreStr.split(":")[1])
+
+        // Ajustar la hora de cierre si es anterior a la hora de apertura
+        if (horaCierre < horaApertura) {
+            horaCierre.setDate(horaCierre.getDate() + 1);
+        }
+
+        // console.log("Hora de apertura:", horaApertura);
+        // console.log("Hora de cierre:", horaCierre);
+        // console.log("Fecha Reserva:", fechaReserva);
+
+        // Limpiar opciones actuales
+        HoraInput.innerHTML = '';
+
+        // Intervalo de tiempo (en minutos) entre opciones
+        var intervalo = 60;
+
+        // Generar opciones
+        for (var tiempo = new Date(horaApertura); tiempo < horaCierre; tiempo.setMinutes(tiempo.getMinutes() + intervalo)) {
+            var horaStr = ('0' + tiempo.getHours()).slice(-2);
+            var minutoStr = ('0' + tiempo.getMinutes()).slice(-2);
+            var optionText = horaStr + ":" + minutoStr;
+
+            var option = document.createElement("option");
+            option.value = optionText;
+            option.text = optionText;
+
+            // Desactivar la opción si la hora ya ha pasado
+            if (tiempo.getTime() < fechaActual.getTime()) {
+                option.disabled = true;
+            }
+
+            HoraInput.add(option);
+        }
+    }
+
+    function CreateNewTable() {
+        const body = document.body;
+
+        const tbl = document.createElement('table');
+        tbl.id = "mapa";
+
+        for (let i = 0; i < GridSizeY; i++) {
+            const tr = tbl.insertRow();
+            for (let j = 0; j < GridSizeX; j++) {
+                const td = tr.insertCell();
+                td.id = i + "-" + j;
+                td.width = 630 / GridSizeY;
+                td.height = 630 / GridSizeX;
+            }
+        }
+        container.appendChild(tbl);
+        GetCasillas();
+
+        FechaInput.valueAsDate = new Date();
+        FechaInput.min = new Date().toISOString().split("T")[0];
+        UpdateHoursSelec();
+    }
+
+    function SetTable(casillasRestaurante) {
+        casillasRestaurante.forEach(function (cR) {
+            let cords = cR.Y + '-' + cR.X;
+
+            if (cR.EsMesa == false)
+                SetState(1);
+            else {
+                SetState(2);
+
+                cas = document.getElementById(cords); 
+
+                const btn = document.createElement('button');
+                btn.type = "button";
+                btn.style.width = "100%";
+                btn.style.height = "100%";
+                btn.style.borderRadius = "0 !important";
+                btn.style.backgroundColor = "transparent";
+                btn.style.border = "none";
+
+                btn.setAttribute("data-bs-toggle", "modal"); 
+                btn.setAttribute("data-bs-target", "#Modal");
+                btn.setAttribute("data-bs-whatever", cR.IdCasilla);
+
+                // Tooltip
+                btn.setAttribute("data-tooltip", "tooltip");
+                btn.setAttribute("data-bs-placement", "top");
+                btn.setAttribute("data-bs-title", "Seleccionar mesa");
+
+                const i = document.createElement('i');
+                i.classList.add("fa");
+                i.classList.add("fa-solid");
+                i.classList.add("fa-utensils");
+
+                cas.appendChild(btn);
+                btn.appendChild(i);
+            }
+
+            ChangeState(cords);
+        });
+    }
+
+    let PencilDraw = 0;
+
+    function SetState(type) {
+        PencilDraw = type;
+    }
+
+    function ChangeState(IdCasilla) {
+        let Casilla = document.getElementById(IdCasilla);
+        let cords = Casilla.id.split("-");
+
+        if (PencilDraw == 0) {
+            Casilla.classList.remove("Aire");
+            Casilla.classList.remove("Mesa");
+        }
+        else if (PencilDraw == 1) {
+            Casilla.classList.add("Aire");
+            Casilla.classList.remove("Mesa");
+        }
+        else if (PencilDraw == 2) {
+            Casilla.classList.remove("Aire");
+            Casilla.classList.add("Mesa");
+        }
+    }
+
+    function GetCasillas() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetCasillas", "Restaurante")",
+            data: { idRestaurante: @Model.IdRestaurante },
+            dataType: "json",
+            success: function (casillasJson) {
+                // Convertir el JSON a una array de objetos CasillasJS
+                var casillasArray = JSON.parse(casillasJson);
+                if (casillasArray != null) {
+                    console.log(casillasArray);
+                    SetTable(casillasArray);
+
+                    // Mostrar los tooltips
+                    let tooltipTriggerList = document.querySelectorAll("[data-tooltip='tooltip']");
+                    let tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+                    $("[data-tooltip='tooltip']").on("click", function () {
+                        // Ocultamos y volvemos a mostrar en 1ms el icono de localización para evitar el bug de que no se oculta el tooltip
+                        // Referencia: https://stackoverflow.com/a/44074975
+                        let element = $(this);
+                        element.hide();
+                        setTimeout(function () {
+                            element.show();
+                        }, 1);
+                    });
+                    
+                    // Quitar el focus cuando se oculta el modal
+                    // Referencia: https://stackoverflow.com/questions/28410979/how-can-i-prevent-the-focus-on-the-toggle-button-for-a-bootstrap-modal-after-the
+                    $('.modal').on('hidden.bs.modal', function (event) {
+                        event.stopImmediatePropagation();
+                    });
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+</script>

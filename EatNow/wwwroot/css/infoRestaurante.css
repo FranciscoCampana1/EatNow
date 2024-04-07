@@ -1,0 +1,133 @@
+﻿#main-container {
+    width: 100%;
+    display: flex;
+}
+
+#info {
+    width: 60%;
+    padding: 10px;
+}
+
+#portada {
+    overflow: hidden;
+    width: 100%;
+    height: 60%;
+    margin-bottom: 10px;
+}
+
+    #portada > img {
+        object-fit: fill;
+        overflow: hidden;
+        width: 100%;
+    }
+
+#cont-info {
+    width: 100%;
+}
+
+.block {
+    background-color: #EC992E;
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0 19px 38px #25293A, 0 15px 12px #25293A38 !important;
+    width: 100%;
+    height: 100%;
+}
+
+.block p {
+    margin-bottom: 2px;
+}
+
+/* --== HORARIO ==-- */
+.horario button {
+    padding: 5px;
+    border-style: none;
+    width: 60px;
+    margin-bottom: 5px;
+}
+
+#cont-menu {
+    background-color: #BD4760;
+    border-radius: 10px;
+    width: 40%;
+    max-height: 100%;
+    margin: 0px 10px;
+    box-shadow: 0 19px 38px #25293A, 0 15px 12px #25293A38 !important;
+}
+
+#menu {
+    background-color: #25293A;
+    border-radius: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 10px 20px;
+    max-width: 100%;
+    height: 70%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+}
+
+.plato {
+    aspect-ratio: 1/1;
+    background-color: #F7F9F7;
+    max-width: 23%;
+    border-radius: 5px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+    .plato img {
+        max-width: 80%;
+        margin: auto;
+        display: block;
+        transition: all 0.5s ease-out;
+    }
+
+        .plato img:hover {
+            max-width: 90%;
+            transition: all 0.5s ease-out;
+        }
+
+#reserva {
+    max-width: 100%;
+    height: 10%;
+    margin: 10px 15px;
+    padding: 5px 25px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #25293A;
+}
+
+.horario button.clean {
+    background-color: #7a9a51;
+}
+
+.horario button.mid {
+    background-color: #f88a19;
+}
+
+.horario button.full {
+    background-color: #f44336;
+}
+
+.horario button.past {
+    background-color: #252a39;
+}
+
+a[data-bs-toggle="tooltip"] {
+    margin-left: 5px;
+    cursor: pointer
+}
+
+/* Estilos para mostrar bien las imágenes del carousel */
+#carouselExampleControls .carousel-item img {
+    object-fit: contain;
+    object-position: center;
+    overflow: hidden;
+    height: 50vh;
+}

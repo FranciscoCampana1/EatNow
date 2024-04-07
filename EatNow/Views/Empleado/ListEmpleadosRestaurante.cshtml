@@ -1,0 +1,58 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<Empleado>
+
+<link rel="stylesheet" type="text/css" href="~/css/listaEmpleados.css">
+
+<div id="main-container">
+    <!-- INFORMACION DEL USUARIO -->
+    <div id="informacion-user">
+        <div id="info-cont" style="width: 90%;">
+            <div style="display: flex; width: 100%;">
+                <div style="width: 40%;" class="inf2"><label>DNI</label></div>
+                <div style="width: 40%;" class="inf2"><label>NOMBRE</label></div>
+                <div style="width: 60%;" class="inf2"><label>APELLIDOS</label></div>
+                <div style="width: 80%;" class="inf2"><label>CORREO ELECTRÓNICO</label></div>
+                <div style="width: 80%;" class="inf2"><label>CONTRASEÑA</label></div>
+                <div style="width: 12%;" class="inf2"></div>
+            </div>
+            @foreach(Empleado empleado in Model)
+            {
+                <form style="display: flex; width: 100%;" asp-action="EliminarEmpleado" asp-controller="Empleado" method="post" asp-antiforgery="true">
+                    <input type="text" name="idEmpleado" style="display: none;" value="@empleado.IdEmpleado">
+                    <div style="width: 40%;" class="inf2"><label>@empleado.DNI</label></div>
+                    <div style="width: 40%;" class="inf2"><label>@empleado.Nombre</label></div>
+                    <div style="width: 60%;" class="inf2"><label>@empleado.Apellidos</label></div>
+                    <div style="width: 80%;" class="inf2"><label>@empleado.CorreoElectronico</label></div>
+                    <div style="width: 80%;" class="inf2"><label>@empleado.Password</label></div>
+                    <input style="display: none;" value="@empleado.RIdRestaurante">
+                    <div style="width: 12%;" class="inf2"><button class="btn danger" type="submit"><i class="fa fa-solid fa-trash"></i></button></div>
+                </form>
+            }
+        </div>
+    </div>
+    <div>
+        <form id="añadirEmpleado" asp-action="AddEmpleado" asp-controller="Empleado" method="post" asp-antiforgery="true">
+            <div class="input-box">
+                <input type="text" name="idRestaurante" value="@ViewBag.IdRestaurante" style="display: none;" />
+                <label>
+                    <input type="text" name="dni" placeholder="DNI" />
+                </label>
+                <label>
+                    <input type="text" name="nombre" placeholder="Nombre" />
+                </label>
+                <label>
+                    <input type="text" name="apellidos" placeholder="Apellidos" />
+                </label>
+                <label>
+                    <input type="email" name="email" placeholder="Correo Electrónico" />
+                </label>
+                <label>
+                    <input type="password" name="password" placeholder="Contraseña" />
+                </label>
+                <button type="submit" class="btn success">+</button>
+            </div>
+        </form>
+    </div>
+</div>

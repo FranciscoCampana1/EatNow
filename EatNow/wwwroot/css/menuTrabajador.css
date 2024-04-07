@@ -1,0 +1,51 @@
+﻿/*COLOR 1: Blanco:  #F7F9F7  */
+/*COLOR 2: NARANJA: #EC992E  */
+/*COLOR 3: ROJO:    #E76954  */
+/*COLOR 4: MORADO:  #BD4760  */
+/*COLOR 5: NEGRO:   #25293A  */
+
+#cont-slots {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+    margin: 5%;
+}
+
+.slot {
+    border-radius: 20px;
+    background-color: #EC992E;
+    border: none;
+    box-shadow: 0 10px 28px #25293A;
+    padding: 10px;
+    margin: 15px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    transition: all 0.75s ease-out;
+}
+
+    .slot:hover {
+        background-color: #BD4760;
+        box-shadow: 0 19px 38px #25293A, 0 15px 12px #25293A38;
+        transition: all 0.75s ease-out;
+    }
+
+    .slot p {
+        color: #F7F9F7;
+        font-size: 2em;
+    }
+
+    .slot button {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: transparent;
+        border: none;
+        z-index: 2
+    }

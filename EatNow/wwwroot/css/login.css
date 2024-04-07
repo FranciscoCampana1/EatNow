@@ -1,0 +1,343 @@
+﻿/*COLOR 1: Blanco:  #F7F9F7  */
+/*COLOR 2: NARANJA: #EC992E  */
+/*COLOR 3: ROJO:    #E76954  */
+/*COLOR 4: MORADO:  #BD4760  */
+/*COLOR 5: NEGRO:   #25293A  */
+
+*, *:before, *:after {
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    font-family: 'Nunito', sans-serif !important;
+}
+
+body {
+    width: 100% !important;
+    height: 100vh !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background: -webkit-linear-gradient(left, #EC992E, #E76954) !important;
+    font-family: 'Nunito', sans-serif !important;
+}
+
+header, footer {
+    width: 0 !important;
+    height: 0 !important;
+    visibility: hidden;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+}
+
+input, button {
+    border: none !important;
+    outline: none !important;
+    background: none !important;
+}
+
+.cont {
+    overflow: hidden !important;
+    position: relative !important;
+    width: 900px !important;
+    height: 550px !important;
+    background: #F7F9F7 !important;
+    box-shadow: 0 19px 38px #25293A4d, 0 15px 12px #25293A38 !important;
+    transition: height 1s ease-out;
+}
+
+    .cont.hidden {
+        height: 0 !important;
+        transition: height 1s ease-out;
+    }
+
+.form {
+    position: relative !important;
+    width: 640px !important;
+    height: 100% !important;
+    padding: 50px 30px !important;
+    -webkit-transition: -webkit-transform 1.2s ease-in-out !important;
+    transition: -webkit-transform 1.2s ease-in-out !important;
+    transition: transform 1.2s ease-in-out !important;
+    transition: transform 1.2s ease-in-out, -webkit-transform 1.2s ease-in-out !important;
+}
+
+h2 {
+    width: 100% !important;
+    font-size: 30px !important;
+    text-align: center !important;
+}
+
+label {
+    display: block !important;
+    width: 260px !important;
+    margin: 25px auto 0 !important;
+    text-align: center !important;
+}
+
+    label span {
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        color: #505f75 !important;
+        text-transform: uppercase !important;
+    }
+
+input {
+    display: block !important;
+    width: 100% !important;
+    margin-top: 5px !important;
+    font-size: 16px !important;
+    padding-bottom: 5px !important;
+    border-bottom: 1px solid #25293A66 !important;
+    text-align: center !important;
+    font-family: 'Nunito', sans-serif !important;
+}
+
+button {
+    display: block !important;
+    margin: 0 auto !important;
+    width: 260px !important;
+    height: 36px !important;
+    border-radius: 30px !important;
+    color: #F7F9F7 !important;
+    font-size: 15px !important;
+    cursor: pointer !important;
+}
+
+.submit {
+    margin-top: 40px !important;
+    margin-bottom: 30px !important;
+    text-transform: uppercase !important;
+    font-weight: 600 !important;
+    font-family: 'Nunito', sans-serif !important;
+    background: -webkit-linear-gradient(left, #E76954, #BD4760) !important;
+    transition: background-color 2s ease-out;
+}
+
+    .submit.register {
+        margin-top: 15px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .submit:hover {
+        background: -webkit-linear-gradient(left, #EC992E, #E76954) !important;
+        transition: background-color 2s ease-out;
+    }
+
+.forgot-pass {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #25293A;
+    cursor: pointer;
+}
+
+    .forgot-pass:hover {
+        color: #E76954;
+    }
+
+.Question {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #25293A;
+    cursor: pointer;
+}
+
+.sub-cont {
+    overflow: hidden !important;
+    position: absolute !important;
+    left: 640px !important;
+    top: 0 !important;
+    width: 900px !important;
+    height: 100% !important;
+    padding-left: 260px !important;
+    background: #F7F9F7 !important;
+    -webkit-transition: -webkit-transform 1.2s ease-in-out !important;
+    transition: -webkit-transform 1.2s ease-in-out !important;
+    transition: transform 1.2s ease-in-out !important;
+}
+
+.cont.s-signup .sub-cont {
+    -webkit-transform: translate3d(-640px, 0, 0);
+    transform: translate3d(-640px, 0, 0);
+}
+
+.img {
+    overflow: hidden !important;
+    z-index: 2 !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 260px !important;
+    height: 100% !important;
+    padding-top: 360px !important;
+}
+
+    .img:before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 900px;
+        height: 100%;
+        background-image: url("../img/waitress-serving-customer-at-the-coffee-shop-photo.jpg");
+        background-size: cover;
+        transition: -webkit-transform 1.2s ease-in-out;
+        transition: transform 1.2s ease-in-out, -webkit-transform 1.2s ease-in-out;
+    }
+
+    .img:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.3);
+    }
+
+.cont.s-signup .img:before {
+    -webkit-transform: translate3d(640px, 0, 0);
+    transform: translate3d(640px, 0, 0);
+}
+
+.img-text {
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    top: 50px;
+    width: 100%;
+    padding: 0 20px;
+    text-align: center;
+    color: #F7F9F7;
+    -webkit-transition: -webkit-transform 1.2s ease-in-out;
+    transition: -webkit-transform 1.2s ease-in-out;
+    transition: transform 1.2s ease-in-out, -webkit-transform 1.2s ease-in-out;
+}
+
+    .img-text h2 {
+        margin-bottom: 10px !important;
+        font-weight: normal !important;
+    }
+
+    .img-text p {
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+    }
+
+.cont.s-signup .img-text.m-up {
+    -webkit-transform: translateX(520px);
+    transform: translateX(520px);
+}
+
+.img-text.m-in {
+    -webkit-transform: translateX(-520px);
+    transform: translateX(-520px);
+}
+
+.cont.s-signup .img-text.m-in {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+}
+
+
+.sign-in {
+    padding-top: 65px;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+}
+
+.cont.s-signup .sign-in {
+    -webkit-transition-timing-function: ease-in-out;
+    transition-timing-function: ease-in-out;
+    -webkit-transition-duration: 1.2s;
+    transition-duration: 1.2s;
+    -webkit-transform: translate3d(640px, 0, 0);
+    transform: translate3d(640px, 0, 0);
+}
+
+.img-btn {
+    overflow: hidden !important;
+    z-index: 2 !important;
+    position: relative !important;
+    width: 130px !important;
+    height: 36px !important;
+    margin: 0 auto !important;
+    background: transparent !important;
+    color: #F7F9F7 !important;
+    text-transform: uppercase !important;
+    font-size: 15px !important;
+    cursor: pointer !important;
+}
+
+    .img-btn:after {
+        content: '';
+        z-index: 2;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border: 2px solid #F7F9F7;
+        border-radius: 30px;
+    }
+
+    .img-btn span {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        display: -webkit-box !important;
+        display: flex !important;
+        -webkit-box-pack: center !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        height: 100% !important;
+        -webkit-transition: -webkit-transform 1.2s !important;
+        transition: -webkit-transform 1.2s !important;
+        transition: transform 1.2s !important;
+        transition: transform 1.2s, -webkit-transform 1.2s !important;
+    }
+
+        .img-btn span.m-in {
+            -webkit-transform: translateY(-72px);
+            transform: translateY(-72px);
+        }
+
+.cont.s-signup .img-btn span.m-in {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+}
+
+.cont.s-signup .img-btn span.m-up {
+    -webkit-transform: translateY(72px);
+    transform: translateY(72px);
+}
+
+.sign-up {
+    -webkit-transform: translate3d(-900px, 0, 0);
+    transform: translate3d(-900px, 0, 0);
+}
+
+.cont.s-signup .sign-up {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+div.alert.danger > button[aria-label="Close"], div.alert.success > button[aria-label="Close"] {
+    padding: 1.25rem 1rem !important;
+    width: 1em !important;
+    height: 1em !important;
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat !important;
+}
+
+i[id^="togglePassword"] {
+    float: right;
+    cursor: pointer;
+    margin-top: -25px !important;
+}

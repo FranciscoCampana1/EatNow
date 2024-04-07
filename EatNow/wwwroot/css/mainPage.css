@@ -1,0 +1,213 @@
+﻿:root {
+    --color-fondo-claro: #F7F9F7;
+    --color-contraste-claro: #EC992E;
+    --color-principal: #E76954;
+    --color-contraste-oscuro: #BD4760;
+    --color-fondo-oscuro: #25293A;
+}
+
+.container {
+    max-width: 100%;
+    width: 100%;
+}
+
+.restaurante {
+    overflow: hidden;
+    background-color: var(--color-contraste-claro);
+    box-shadow: 0 10px 28px #25293A !important;
+    border-radius: 8%;
+    display: flex;
+    width: 50%;
+    height: 40vh;
+    margin: 5px;
+    border: 0 var(--color-contraste-claro) solid;
+    transition: all 0.75s ease-out;
+}
+
+    .restaurante:hover {
+        margin: 15px;
+        width: 80% !important;
+        height: 50vh !important;
+        box-shadow: 0 19px 38px #25293A, 0 15px 12px #25293A38 !important;
+        border-radius: 0;
+        border: 15px var(--color-contraste-claro) solid;
+        transition: all 0.75s ease-out;
+    }
+
+.cont-img {
+    overflow: hidden;
+    width: 33%;
+    height: 100%;
+}
+
+    .cont-img > img {
+        object-fit: cover;
+        overflow: hidden;
+        height: 100%;
+    }
+
+.cont-info {
+    width: 66%;
+    max-height: 100%;
+    padding: 10px;
+    padding-right: 0;
+}
+
+.cont-info > .info > p > a[data-bs-toggle="tooltip"] {
+    margin-left: 5px;
+    cursor: pointer
+}
+
+.restaurante > p {
+    color: #25293A;
+}
+
+.info {
+    height: 100%;
+    transition: all 0.5s ease-out;
+}
+
+.reservar {
+    overflow: hidden;
+    height: 0;
+    padding: 0;
+    display: flex;
+    justify-content: right;
+    align-items: end;
+    transition: all 0.5s ease-out;
+}
+
+.restaurante:hover .info {
+    height: 80%;
+    transition: all 0.5s ease-out;
+}
+
+.restaurante:hover .reservar {
+    height: 20%;
+    transition: all 0.5s ease-out;
+}
+
+.restaurante:hover button {
+    padding: 3px 10px !important;
+}
+
+.reservar button {
+    padding: 0;
+    height: 80%;
+}
+
+.desc {
+    max-height: 50%;
+    overflow: hidden;
+}
+
+.horario label {
+    background-color: #E76954;
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: #F7F9F7;
+    font-weight: 20px;
+}
+
+.options {
+    width: 40%;
+    padding: 10px;
+    margin: 0 40px 30px 40px;
+}
+
+/* -- FILTER CONTROLLER -- */
+
+.filter-container h2 {
+    color: #F7F9F7;
+    font-weight: 5px;
+    text-align: center;
+}
+
+.filter-container {
+    width: 100%;
+    background-color: #E76954;
+    border-radius: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    /*height: 100%;*/
+    box-shadow: #25293A 0 10px 20px;
+}
+
+    .filter-container div {
+        margin: 0 auto;
+    }
+
+.filter {
+    overflow: hidden;
+    border-radius: 20px;
+    margin-bottom: 10px !important;
+}
+
+    .filter input {
+        border: none;
+        background-color: #F7F9F7;
+    }
+
+    .filter label {
+        padding: 5px;
+        background-color: #F7F9F7;
+        border-radius: 2px;
+        border-style: none;
+        margin: 2px;
+    }
+
+.time {
+    width: 49%;
+    display: flex;
+    float: left;
+    margin-right: -1px;
+}
+
+    .time input {
+        width: 100%;
+    }
+
+.search {
+    width: 100%;
+    background-color: #F7F9F7;
+    border-radius: 2px;
+    vertical-align: middle;
+    white-space: nowrap;
+    position: relative;
+}
+
+    .search input {
+        width: 90%;
+    }
+
+/* -- ULTIMAS RESERVAS -- */
+
+.last-reservas {
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+    .last-reservas button {
+        overflow: hidden;
+        width: 80%;
+        margin: 2px;
+        font-weight: 10px;
+        background-color: #BD4760;
+        transition: all 1s ease-out;
+    }
+
+        .last-reservas button:hover {
+            width: 95%;
+            margin: 2px;
+            font-weight: 10px;
+            background-color: #BD4760;
+            transition: all 0.5s ease-out;
+        }
+
+.reserva {
+    background-color: #F7F9F7;
+    border-radius: 5px;
+    margin-bottom: 2px !important;
+    padding: 2px 5px;
+}

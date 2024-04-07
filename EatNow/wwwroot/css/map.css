@@ -1,0 +1,65 @@
+#MainContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+#MapContainer {
+    max-width: 70%;
+    height: 90vh;
+    border-style: solid;
+    border-color: black;
+    border-width: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+td {
+    border-style: inherit;
+    border-width: 1px;
+    background-color: gray;
+    aspect-ratio: 1/1;
+}
+
+.pincel {
+    border: #252a39;
+    border-style: solid;
+    background-color: #EC992E;
+}
+
+    .pincel:hover {
+        background-color: #E76954;
+    }
+
+    .pincel.Selected {
+        background-color: #BD4760;
+    }
+
+
+td.Mesa {
+    background-color: #7a9a51;
+    cursor: pointer;
+}
+
+    td.Mesa:hover {
+        background-color: #a7dd61;
+        cursor: pointer;
+    }
+
+td.Aire {
+    background-color: #F7F9F7;
+}
+
+.Ocupada {
+    background-color: #252a39;
+}
+
+.Selec {
+    border-color: #f88a19;
+    border-width: 2px;
+}
+
+#Options button {
+    padding: 10px 20px;
+    font-weight: 800;
+}

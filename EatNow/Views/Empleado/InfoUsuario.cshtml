@@ -1,0 +1,39 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Empleado
+
+<link rel="stylesheet" type="text/css" href="~/css/infoPerfil.css">
+
+<div id="main-container">
+    <!-- INFORMACION DEL USUARIO -->
+    <div id="informacion-user" class="Selected">
+        <div id="cont-img">
+            <img src="/images//noImage.jpg">
+        </div>
+        <div id="info-cont">
+            <div id="info">
+                <div style="width: 40%;">
+                    <div class="inf"><label>Nombre:</label></div>
+                    <div class="inf"><label>Apellidos:</label></div>
+                    <div class="inf"><label>Correo Electrónico:</label></div>
+                </div>
+                <div style="width: 60%;">
+                    <div class="inf"><label>@Model.Nombre</label></div>
+                    <div class="inf"><label>@Model.Apellidos</label></div>
+                    <div class="inf"><label>@Model.CorreoElectronico</label></div>
+                </div>
+            </div>
+        </div>
+    </div>   
+</div>
+
+<script>
+    let InfoUser = document.getElementById("informacion-user");
+    let EditUser = document.getElementById("editar-user");
+
+    function ToogleEditUser() {
+        InfoUser.classList.toggle("Selected");
+        EditUser.classList.toggle("Selected");
+    }
+</script>
